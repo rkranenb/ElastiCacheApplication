@@ -6,10 +6,16 @@ namespace ElastiCacheApplication {
 	class Program {
 
 		static void Main(string[] args) {
+			ShowApplicationInfo();
+			TryExecute(() => {
+				var console = IoC.Initialize().GetInstance<IRedisConsole>();
+				console.Execute();
+			});
+		}
+
+		private static void ShowApplicationInfo() {
 			var version = Assembly.GetExecutingAssembly().GetName().Version;
-			Console.WriteLine("ElastiCache Application version {0}.{1}", version.Major, version.Minor);
-			var thingy = new StackExchangeSpullenboel(new Config());
-			TryExecute(() => thingy.Execute());
+			Console.WriteLine("ElastiCache Application version {0}.{1}\n", version.Major, version.Minor);
 		}
 
 		private static void TryExecute(Action action) {
