@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ElastiCacheApplication.Commands {
 
@@ -22,14 +19,23 @@ namespace ElastiCacheApplication.Commands {
 
 		public void Execute(string[] args) {
 
-			if (args.Length != 2) throw new InvalidSyntaxException();
-
-			logger.Info("Put value into database");
+			if (args.Length < 2 || args.Length > 3) throw new InvalidSyntaxException();
 
 			var key = Encoding.Default.GetBytes(args[0]);
 			var value = Encoding.Default.GetBytes(args[1]);
 
-			client.Put(key, value);
+			double timeoutInMinutes = 0;
+			if (args.Length == 3) {
+				if (double.TryParse(args[2], out timeoutInMinutes)) {
+					client.Put(key, value, timeoutInMinutes);
+					logger.Info("Put value into database with expiry of {0} minutes.\nItem will be removed at {1}", timeoutInMinutes, DateTime.Now.AddMinutes(timeoutInMinutes));
+					return;
+				} 
+				throw new ArgumentException("Invalid value for 'timeoutInMinutes'.");
+			} else {
+				client.Put(key, value);
+				logger.Info("Put value into database");
+			}
 
 		}
 	}

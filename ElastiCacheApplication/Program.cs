@@ -6,7 +6,7 @@ namespace ElastiCacheApplication {
 	class Program {
 
 		static void Main(string[] args) {
-			ShowApplicationInfo();
+			ShowApplicationInfo();			
 			TryExecute(() => {
 				var console = IoC.Initialize().GetInstance<IRedisConsole>();
 				console.Execute();

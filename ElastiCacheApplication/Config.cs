@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace ElastiCacheApplication {
 
@@ -8,7 +9,14 @@ namespace ElastiCacheApplication {
 
 	public class Config : IConfig {
 		public string Host {
-			get { return ConfigurationManager.AppSettings["host"]; }
+			get {
+				var args = Environment.GetCommandLineArgs();
+				if (args.Length == 2) {
+					return args[1];
+				}
+				return ConfigurationManager.AppSettings["host"];
+			}
 		}
 	}
+
 }

@@ -15,10 +15,12 @@ namespace ElastiCacheApplication {
 	public class CommandProcessor : ICommandProcessor {
 
 		private readonly IEnumerable<ICommand> commands;
+		private ILogger logger;
 
 
-		public CommandProcessor(ICommand[] commands) {
+		public CommandProcessor(ICommand[] commands, ILogger logger) {
 			this.commands = commands;
+			this.logger = logger;
 		}
 
 		public void Execute(string args) {
@@ -32,7 +34,9 @@ namespace ElastiCacheApplication {
 				var command = commands.Single(c => c.Key.Equals(args[0], StringComparison.OrdinalIgnoreCase));
 				command.Execute(args.Skip(1).ToArray());
 			} catch (InvalidOperationException) {
-				Console.WriteLine("Not a valid command.");
+				logger.Warn("Not a valid command.");
+			} catch (Exception e) {
+				logger.Error(e.Message);
 			}
 		}
 

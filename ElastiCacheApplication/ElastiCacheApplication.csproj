@@ -59,7 +59,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandProcessor.cs" />
+    <Compile Include="Commands\DelCommand.cs" />
+    <Compile Include="Commands\ExistsCommand.cs" />
     <Compile Include="Commands\HelpCommand.cs" />
+    <Compile Include="Commands\HostCommand.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\InvalidSyntaxException.cs" />
     <Compile Include="Commands\GetCommand.cs" />
